@@ -128,7 +128,7 @@ def split(in_,out_,n):
             out_file_path=os.path.join(folder_path,files)
             if not os.path.exists(folder_path):
                 os.makedirs(folder_path)
-            copyfile(current_file_path,out_file_path)
+            move(current_file_path,out_file_path)
     for num in range(n):
         folders_name="train_"+str(num)
         if folders_name in os.listdir(out_):
