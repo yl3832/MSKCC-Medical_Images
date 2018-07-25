@@ -8,10 +8,11 @@ parser.add_argument('--dir_in', default='./image',help="the dirctory where the p
 parser.add_argument('--dir_out',default='./images',help="the dirctory where the train and test sets are in")
 parser.add_argument('--tr_te_split', default=0.9,help="training set and testing set ratio")
 parser.add_argument('--random_seed',default=1,type=int,help="random seed for splitting dataset")
-parser.add_argument('--split_training_data',default=0,type=int,help="shuffle and split training data")
+parser.add_argument('--split_training_data',default=1,type=int,help="shuffle and split training data")
 parser.add_argument('--in_',default="./images/train",help="dir in of original training dataset")
 parser.add_argument('--out_',default="./images",help="dir out of split training dataset")
 parser.add_argument('--n',default=7,type=int,help="how many sub-sets")
+parser.add_argument('--split_data',default=0,type=int,help="shuffle and split data")
 
 args = parser.parse_args()
 random_seed=args.random_seed
@@ -23,6 +24,7 @@ split_training_data=args.split_training_data
 in_=args.in_
 out_=args.out_
 n=args.n
+split_data=args.split_data
 
 def init_reorganize(dir_in):
     count = 0
@@ -36,7 +38,7 @@ def init_reorganize(dir_in):
                 os.remove(current_file_path)
         else:
             pass
-    print str(count)+' files deleted'
+    print(str(count)+' files deleted')
 
 def reorganize_dataset(dir_in,dir_out,tr_te_split):
     if not os.path.exists(dir_out):
@@ -50,21 +52,21 @@ def reorganize_dataset(dir_in,dir_out,tr_te_split):
     total_training=0
     total_testing=0
     length=len(os.listdir(os.path.join(dir_in, "sharp")))
-    print str(length)+' sample pairs in total'
-    #print(str(length)+' sample pairs in total')
+    #print str(length)+' sample pairs in total'
+    print(str(length)+' sample pairs in total')
     n_tr=int(tr_te_split*length)
     n_te=length-n_tr
     tr_inds=np.random.choice(length-1,n_tr,replace=False)
-    print tr_inds
+    print(tr_inds)
     for folder in os.listdir(dir_in):
         current_folder_path = os.path.join(dir_in, folder)
         if folder=='.DS_Store':
             os.remove(current_folder_path)
         else:
-            print 'processing '+folder
-            print str(len(os.listdir(current_folder_path)))+' samples in total'
-            #print('processing '+folder)
-            #print(str(len(os.listdir(current_folder_path)))+' samples in total')
+            #print 'processing '+folder
+            #print str(len(os.listdir(current_folder_path)))+' samples in total'
+            print('processing '+folder)
+            print(str(len(os.listdir(current_folder_path)))+' samples in total')
             tr_folder_dir=os.path.join(tr_dir,folder)
             if not os.path.exists(tr_folder_dir):
                 os.makedirs(tr_folder_dir)
@@ -83,16 +85,16 @@ def reorganize_dataset(dir_in,dir_out,tr_te_split):
                     output_file_path=os.path.join(te_folder_dir,files)
                     copyfile(file_path, output_file_path)
                 ind=ind+1
-            print str(n_tr)+' training samples copied'
-            print str(n_te)+' testing samples copied'
-            #print(str(n_tr)+' training samples copied')
-            #print(str(n_te)+' testing samples copied')
+            #print str(n_tr)+' training samples copied'
+            #print str(n_te)+' testing samples copied'
+            print(str(n_tr)+' training samples copied')
+            print(str(n_te)+' testing samples copied')
             total_training=total_training+n_tr
             total_testing=total_testing+n_te
-    print "number of training samples: "+str(total_training)
-    print "number of testing samples: "+str(total_testing) 
-    #print ("number of training samples: "+str(total_training))
-    #print ("number of testing samples: "+str(total_testing))
+    #print "number of training samples: "+str(total_training)
+    #print "number of testing samples: "+str(total_testing) 
+    print ("number of training samples: "+str(total_training))
+    print ("number of testing samples: "+str(total_testing))
 
 def rename(in_):
     for folder in os.listdir(in_):
@@ -137,17 +139,18 @@ def split(in_,out_,n):
             # print (folders_name)
             # print ("A:"+str(len(os.listdir(folders_path_B))))
             # print ("B:"+str(len(os.listdir(folders_path_B))))
-            print folders_name
-            print "A:"+str(len(os.listdir(folders_path_A)))
-            print "B:"+str(len(os.listdir(folders_path_B)))
-            #print(folders_name)
-            #print("A:"+str(len(os.listdir(folders_path_A))))
-            #print("B:"+str(len(os.listdir(folders_path_B))))
+            #print folders_name
+            #print "A:"+str(len(os.listdir(folders_path_A)))
+            #print "B:"+str(len(os.listdir(folders_path_B)))
+            print(folders_name)
+            print("A:"+str(len(os.listdir(folders_path_A))))
+            print("B:"+str(len(os.listdir(folders_path_B))))
         else: pass
     
-
-init_reorganize(dir_in)
-reorganize_dataset(dir_in,dir_out,tr_te_split)
-rename(in_)
+if split_data==1:
+    init_reorganize(dir_in)
+    reorganize_dataset(dir_in,dir_out,tr_te_split)
+    rename(in_)
+else: pass    
 if split_training_data==1:
     split(in_,out_,n)
