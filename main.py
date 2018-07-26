@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 from model_tf import deblur_model
 import argparse
-from utils import load_images, load_own_images
+from utils import load_images, load_own_images,rgb2grayscale
 import os
 import h5py
 
@@ -78,5 +78,6 @@ if __name__ == '__main__':
                            customized=param.customized,
                            save_to=param.save_to)
         else:
-            model.generate(test_data, batch_size=param.batch_size, trained_model=param.model_name)
-    
+            dir_in=model.generate(test_data, batch_size=param.batch_size, trained_model=param.model_name)
+            dir_out=dir_in+"_gray"
+            rgb2grayscale(dir_in,dir_out)

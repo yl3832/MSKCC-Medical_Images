@@ -380,6 +380,6 @@ class deblur_model():
                         # print(PSNR(y,img))
                 psnr_mean = psnr/size
                 print("PSNR of testing data: "+str(psnr_mean))
-        return generated
+        return save_to
            
                 
