@@ -2,6 +2,8 @@ import numpy as np
 import os 
 from shutil import copyfile,move
 import argparse
+import h5py
+from utils import load_images
 
 parser = argparse.ArgumentParser(description="reorganize training and testing dataset")
 parser.add_argument('--dir_in', default='./image',help="the dirctory where the pairs are in")
@@ -13,6 +15,9 @@ parser.add_argument('--in_',default="./images/train",help="dir in of original tr
 parser.add_argument('--out_',default="./images",help="dir out of split training dataset")
 parser.add_argument('--n',default=7,type=int,help="how many sub-sets")
 parser.add_argument('--split_data',default=0,type=int,help="shuffle and split data")
+parser.add_argument('--convert_cache', default=0,type=int,help="convert the train dataset to cache or not")
+parser.add_argument('--train_in', default='./images',help="the dirctory where the pairs are in")
+
 
 args = parser.parse_args()
 random_seed=args.random_seed
@@ -25,6 +30,8 @@ in_=args.in_
 out_=args.out_
 n=args.n
 split_data=args.split_data
+convert_cache=args.convert_cache
+train_in=args.train_in
 
 def init_reorganize(dir_in):
     count = 0
@@ -146,7 +153,18 @@ def split(in_,out_,n):
             print("A:"+str(len(os.listdir(folders_path_A))))
             print("B:"+str(len(os.listdir(folders_path_B))))
         else: pass
-    
+
+def convert_cache(train_in):
+    print('Loading data')
+    for folder in os.listdir(train_in)[1:]:
+        print(folder)
+        train_data = load_images(os.path.join(param.train_in, folder),n_images=-1)
+        cache_file = folder+'.hdf5'
+        h5f = h5py.File(cache_file, 'w')
+        h5f.create_dataset('A', data=train_data['A'])
+        h5f.create_dataset('B', data=train_data['B'])
+        h5f.close()
+        
 if split_data==1:
     init_reorganize(dir_in)
     reorganize_dataset(dir_in,dir_out,tr_te_split)
@@ -154,3 +172,6 @@ if split_data==1:
 else: pass    
 if split_training_data==1:
     split(in_,out_,n)
+else: pass
+if convert_cache==1:
+    convert_cache(train_in)
