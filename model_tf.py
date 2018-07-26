@@ -65,7 +65,7 @@ class deblur_model():
 
             _out = tf.add(_out, g_input)
 
-            # _out = tf.clip_by_value( _out, clip_value_min = -1, clip_value_max = 1 )
+            #_out = tf.clip_by_value( _out, clip_value_min = -1, clip_value_max = 1 )
             _out = _out/2
 
             self.fake_B = _out
@@ -185,7 +185,9 @@ class deblur_model():
         vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet', input_shape=(256,256,3), input_tensor=_in)
         vgg.trainable = False
         _out = vgg.get_layer('block3_conv3').output
-        self.p_loss = tf.losses.mean_squared_error(_out[bs:],_out[:bs])
+        if param.L1_content_loss==1:
+            self.p_loss = tf.losses.absolute_difference(_out[bs:],_out[:bs])
+        else: self.p_loss = tf.losses.mean_squared_error(_out[bs:],_out[:bs])
         self.g_merge.append(tf.summary.scalar('generator_preceptual_loss', self.p_loss))
     
     def init_loss(self):
@@ -310,6 +312,8 @@ class deblur_model():
                 os.makedirs('model/')
             saver.save(sess, 'model/{}'.format(cur_model_name))
             print('{} Saved'.format(cur_model_name))
+            
+            return cur_model_name
     
     def generate(self,test_data, batch_size, trained_model, save_to = 'deblur_test/', customized=False, save=True):
         # generate deblured image

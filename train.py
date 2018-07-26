@@ -24,12 +24,12 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=2, help='Batch size when training')
     parser.add_argument('--model_name',default=None, help='The pre-trained model name')
     parser.add_argument('--save_freq',default=300, type=int, help='Model save frequency')
-    parser.add_argument('--total_epoch_num',default=10, type=int, help='Total number of epoch for training')
+    parser.add_argument('--total_epoch_num',default=5,type=int, help='Total number of epoch for training')
     parser.add_argument('--epoch_num',default=1, type=int, help='Number of epoch for training')
-    parser.add_argument('--generate_image_freq', default=150, type=int, help='Number of iteration to generate image for checking')
+    parser.add_argument('--generate_image_freq', default=100, type=int, help='Number of iteration to generate image for checking')
     parser.add_argument('--LAMBDA_A', default=100000, type=int, help='The lambda for preceptual loss')
     parser.add_argument('--g_train_num', default=0, type=int, help='Train the generator for x epoch before adding discriminator')
-   
+    parser.add_argument('--L1_content_loss',default=0, type=int, help='use L1 loss for content loss')
     
     param = parser.parse_args()
     print('Building model')
@@ -42,10 +42,18 @@ if __name__ == '__main__':
             h5f = h5py.File(cache_file,'r')
             train_data = {'A':h5f['A'][:], 'B':h5f['B'][:]}
             print('Training model')
-            model.train(train_data, 
+            if i==0 and j==0:
+                 cur_model_name=model.train(train_data, 
                     batch_size=param.batch_size, 
                     pre_trained_model=param.model_name, 
                     save_freq = param.save_freq,
                     epoch_num = param.epoch_num,
                     generate_image_freq = param.generate_image_freq)
+            else:    
+                cur_model_name=model.train(train_data, 
+                        batch_size=param.batch_size, 
+                        pre_trained_model=cur_model_name, 
+                        save_freq = param.save_freq,
+                        epoch_num = param.epoch_num,
+                        generate_image_freq = param.generate_image_freq)
             

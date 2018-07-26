@@ -10,7 +10,7 @@ if __name__ == '__main__':
     
     # add argument
     parser = argparse.ArgumentParser(description="deblur train")
-    parser.add_argument("--is_train", help="train or generate", default=1,type=int)
+    parser.add_argument("--is_train", help="train or generate", default=0,type=int)
     parser.add_argument("--image_dir", help="Path to the image", default="./images")
     parser.add_argument("--g_input_size", help="Generator input size of the image", default=256,type=int)
     #parser.add_argument('--input_nc', type=int, default=3, help='# of input image channels')
@@ -23,22 +23,23 @@ if __name__ == '__main__':
     parser.add_argument('--kernel_size', type=int, default=4, help='kernel size factor in discriminator')
     parser.add_argument('--n_layers_D', type=int, default=3, help='only used if which_model_netD==n_layers')
     parser.add_argument('--batch_size', type=int, default=2, help='Batch size when training')
-    parser.add_argument('--model_name',default=None, help='The pre-trained model name')
-    parser.add_argument('--training_image',default=-1, type=int, help='number of image in training')
-    parser.add_argument('--testing_image',default=200, type=int, help='number of image in testing')
-    parser.add_argument('--save_freq',default=200, type=int, help='Model save frequency')
-    parser.add_argument('--epoch_num',default=10, type=int, help='Number of epoch for training')
-    parser.add_argument('--generate_image_freq', default=50, type=int, help='Number of iteration to generate image for checking')
+    parser.add_argument('--model_name',default='Deblur_1531955259', help='The pre-trained model name')
+    parser.add_argument('--training_image',default=3000, type=int, help='number of image in training')
+    parser.add_argument('--testing_image',default=300, type=int, help='number of image in testing')
+    parser.add_argument('--save_freq',default=300, type=int, help='Model save frequency')
+    parser.add_argument('--epoch_num',default=5, type=int, help='Number of epoch for training')
+    parser.add_argument('--generate_image_freq', default=150, type=int, help='Number of iteration to generate image for checking')
     parser.add_argument('--LAMBDA_A', default=100000, type=int, help='The lambda for preceptual loss')
     parser.add_argument('--g_train_num', default=0, type=int, help='Train the generator for x epoch before adding discriminator')
-    parser.add_argument('--customized', default=0, type=int, help='Generating customized images')
+    parser.add_argument('--customized', default=1, type=int, help='Generating customized images')
     parser.add_argument('--save_to', default='deblur_generate/', help='Path to save deblured customized images')
+    parser.add_argument('--L1_content_loss',default=0, type=int, help='use L1 loss for content loss')
     
     param = parser.parse_args()
     
     # load data
     print('Loading data')
-    cache_file = 'train_cache.hdf5'
+    cache_file = 'train.hdf5'
     if param.is_train:
         if os.path.exists(cache_file):
             h5f = h5py.File(cache_file,'r')
