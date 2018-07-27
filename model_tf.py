@@ -185,7 +185,7 @@ class deblur_model():
         vgg = tf.keras.applications.VGG19(include_top=False, weights='imagenet', input_shape=(256,256,3), input_tensor=_in)
         vgg.trainable = False
         _out = vgg.get_layer('block3_conv3').output
-        if param.L1_content_loss==1:
+        if self.param.L1_content_loss==1:
             self.p_loss = tf.losses.absolute_difference(_out[bs:],_out[:bs])
         else: self.p_loss = tf.losses.mean_squared_error(_out[bs:],_out[:bs])
         self.g_merge.append(tf.summary.scalar('generator_preceptual_loss', self.p_loss))
@@ -380,6 +380,6 @@ class deblur_model():
                         # print(PSNR(y,img))
                 psnr_mean = psnr/size
                 print("PSNR of testing data: "+str(psnr_mean))
-        return save_to
+        return generated
            
                 
