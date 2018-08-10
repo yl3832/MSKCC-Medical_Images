@@ -4,6 +4,8 @@ import os
 from PIL import Image
 import math
 import cv2
+import skimage
+from skimage.measure import compare_psnr, compare_ssim
 
 def res_block(input, filters, training, use_dropout=False):
     
@@ -96,6 +98,11 @@ def PSNR(img1, img2):
         return 100
     PIXEL_MAX = 1
     return 20 * math.log10(PIXEL_MAX / math.sqrt(mse))
+
+def SSIM(img1, img2):
+    im1 = cv2.cvtColor(im1,cv2.COLOR_BGR2YCR_CB)[:, :, 0]
+    im2 = cv2.cvtColor(im2,cv2.COLOR_BGR2YCR_CB)[:, :, 0]
+    return compare_ssim(im1_y, im2_y)
 
 
 def rgb2grayscale(dir_in,dir_out):
