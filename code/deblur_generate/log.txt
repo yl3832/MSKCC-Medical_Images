@@ -1,0 +1,3 @@
+Deblur_1532831458: L2 loss with 5+30 epoches: PSNR of: 25.224316250690165 3000data
+Deblur_1532809401: L1 loss with 5+30 epoches: PSNR of 25.66394661810093 3000data
+Deblur_1531955259: Experiment1 with all original model
