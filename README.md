@@ -12,7 +12,7 @@ Advanced deblurring techniques for computed tomography (CT) images are necessary
 
 ![image](./figs/2.png)
 ![image](./figs/9.png)   
-        Below shows an example of the sharp, blurred, deblurred images (from left to right).   
+        Below shows an example of the deblurred and blurry images (from left to right).   
  
 
 ```
