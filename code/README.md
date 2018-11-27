@@ -39,7 +39,7 @@ Contact: Yilin Lyu (yl3832@columbia.edu)
 The directory name of models should be `model`.
 
 ## Example of Result
-From left to right: Sharp, blurred, deblurred
+From left to right: sharp, blurred, deblurred
 
 ![image](./deblur_generate/Deblur_1532831458_gray/3.png)
 
