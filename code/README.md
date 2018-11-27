@@ -41,6 +41,6 @@ The directory name of models should be `model`.
 ## Example of Result
 From left to right: Sharp, blurred, deblurred
 
-![image](./deblur_generate/Deblur_1532831458_gray/3.PNG)
+![image](./code/deblur_generate/Deblur_1532831458_gray/3.PNG)
 
 See examples in [`examples`](deblur_generate).
