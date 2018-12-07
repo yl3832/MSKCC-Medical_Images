@@ -1,7 +1,7 @@
 # MSKCC-Medical_Images
 MSKCC_program
 
-+ **Projec Title**: Motion-Blind Blur Removal for CT Images with Wasserstein Generative Adversarial Networks  
++ **Project Title**: Motion-Blind Blur Removal for CT Images with Wasserstein Generative Adversarial Networks  
   + Prensentation Slides: [Presentation.pdf](./figs/CISP-BMEI_2018_P1802_Slides.pdf) 
 + **Members**:  
   + Yilin Lyu: Columbia University (yl3832@columbia.edu)
